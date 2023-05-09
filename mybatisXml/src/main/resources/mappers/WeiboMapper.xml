@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="cn.tedu.mybatisxml.mapper.WeiboMapper">
+    <insert id="insert">
+        INSERT INTO weibo
+        VALUES (NULL ,#{content},#{created},#{user_id})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM weibo WHERE id=#{id}
+    </delete>
+
+    <delete id="deleteByIdAndUser_id">/*佔位符中也可以直接寫入形參*/
+        DELETE FROM weibo WHERE id=#{id} AND user_id=#{definitionUid}
+    </delete>
+
+    <update id="updateByID">
+        UPDATE weibo SET content=#{content},created=#{created},user_id=#{user_id} WHERE id=#{id}
+    </update>
+
+    <select id="selectAll" resultType="cn.tedu.mybatisxml.pojo.Weibo">
+        SELECT * FROM weibo
+    </select>
+
+    <select id="selectById" resultType="cn.tedu.mybatisxml.pojo.WeiboVO">
+        SELECT content,created,user_id FROM weibo WHERE id=#{id}
+    </select>
+
+    <select id="selectByCol" resultType="cn.tedu.mybatisxml.pojo.WeiboVO">
+        SELECT content,created FROM weibo
+    </select>
+
+    <!--例題:查詢id區間內的所有文章-->
+    <select id="selectByIdInterval" resultType="cn.tedu.mybatisxml.pojo.Weibo">
+        SELECT * FROM weibo WHERE id BETWEEN #{min} AND #{max}
+    </select>
+
+    <!--例題:查詢文章總是-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM weibo
+    </select>
+
+</mapper>

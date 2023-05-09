@@ -4,7 +4,6 @@ import cn.tedu.mybatisannotation.mapper.CommentMapper;
 import cn.tedu.mybatisannotation.mapper.UserMapper;
 import cn.tedu.mybatisannotation.mapper.WeiboMapper;
 import cn.tedu.mybatisannotation.pojo.*;
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,14 +136,17 @@ class MybatisannotationApplicationTests {
 
     @Test
     void insertComment() {
-        Comment comment = new Comment();
-        comment.setContent("中文評論");
-        comment.setCreated(new Date());
-        comment.setUid(9999);
-        comment.setWid(8888);
-        int insert = commentMapper.insert(comment);
+        int insert = commentMapper.insert("一條中文內容", 222, 777);
         System.out.println(insert);
     }
+
+    @Test
+    void updateComment() {
+        int update = commentMapper.update(2, "一條修改過的中文內容");
+        System.out.println(update);
+    }
+
+
 
 
 }
