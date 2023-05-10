@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--所有配置內容寫在這個標籤內-->
 <mapper namespace="cn.tedu.mybatisxml.mapper.WeiboMapper">
@@ -39,9 +39,21 @@
         SELECT * FROM weibo WHERE id BETWEEN #{min} AND #{max}
     </select>
 
-    <!--例題:查詢文章總是-->
+    <!--例題:查詢文章總數-->
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT COUNT(*) FROM weibo
+    </select>
+
+    <!--查詢文章列表頁面-->
+    <select id="weiboIndex" resultType="cn.tedu.mybatisxml.pojo.WeiboIndexVO">
+        SELECT w.id,u.nickname,w.content FROM weibo w
+        JOIN user u ON w.user_id = u.id
+    </select>
+
+    <!--展示文章詳情頁面-->
+    <select id="weiboInfo" resultType="cn.tedu.mybatisxml.pojo.WeiboInfoVO">
+        SELECT u.nickname,w.content,w.id,w.created FROM weibo w
+        JOIN user u ON w.user_id = u.id
     </select>
 
 </mapper>

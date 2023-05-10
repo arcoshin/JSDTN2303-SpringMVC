@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +53,7 @@ class MybatisxmlApplicationTests {
      */
     @Test
     void deleteById(){
-        int i = userMapper.deleteById(29);
+        userMapper.deleteById(29);
     }
 
     /**
@@ -161,30 +162,108 @@ class MybatisxmlApplicationTests {
         System.out.println(count);
     }
 
-
     /**==============================
      *     自動裝配 CommentMapper
      ==============================*/
     @Autowired
     private CommentMapper commentMapper;
 
+    /**
+     * 新增一條評論
+     */
     @Test
     void insertComment() {
             int insert = commentMapper.insert("一條中文內容by xml", 222, 777);
             System.out.println(insert);
     }
 
+    /**
+     * 透過id刪除一條評論
+     */
     @Test
-    void deleteComment(){
+    void deleteCommentById(){
         int i = commentMapper.deleteById(3);
         System.out.println(i);
     }
 
+    /**
+     * 透過id修改一條評論
+     */
     @Test
-    void updateComment() {
+    void updateCommentById() {
         int update = commentMapper.updateById(2, "一條修改過的中文內容by xml");
         System.out.println(update);
     }
+
+    /**
+     * 透過id數組批量刪除評論
+     */
+    @Test
+    void deleteByIdArray(){
+        Integer[] ids = {4,5,6,7,8,9};
+        commentMapper.deleteByIdArray(ids);
+    }
+
+    /**
+     * 透過id集合批量刪除評論
+     */
+    @Test
+    void deleteByIdList(){
+        List<Integer> ids = new ArrayList<>();
+        for (int i = 10; i < 16; i++) {
+            ids.add(i);
+        }
+        commentMapper.deleteByIdList(ids);
+    }
+
+    /**
+     * 透過可變參數批量刪除評論
+     */
+    @Test
+    void deleteByIds(){
+        commentMapper.deleteByIds(22,23,24,25,21);
+    }
+
+    /**
+     * 根據id動態修改數據
+     */
+    @Test
+    void dynamicUpdate(){
+        Comment comment = new Comment();
+        comment.setId(40);
+        comment.setContent("趙麗穎66666");
+        comment.setUid(41);
+
+        commentMapper.dynamicUpdateById(comment);
+    }
+
+    /**
+     * 展示文章列表頁面
+     */
+    @Test
+    void weiboIndex() {
+        List<WeiboIndexVO> weiboIndexVOList = weiboMapper.weiboIndex();
+        System.out.println(weiboIndexVOList);
+    }
+
+    /**
+     * 展示文章詳情頁面
+     */
+    @Test
+    void weiboInfo(){
+        List<WeiboInfoVO> weiboInfoVOList = weiboMapper.weiboInfo();
+        System.out.println(weiboInfoVOList);
+    }
+
+    /**
+     * 展示評論
+     */
+    @Test
+    void commentInfo(){
+        List<CommentInfoVO> infoVOList = commentMapper.commentInfo();
+        System.out.println(infoVOList);
+    }
+
 
 
 

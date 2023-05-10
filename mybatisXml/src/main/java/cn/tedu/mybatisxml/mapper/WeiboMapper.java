@@ -1,6 +1,8 @@
 package cn.tedu.mybatisxml.mapper;
 
 import cn.tedu.mybatisxml.pojo.Weibo;
+import cn.tedu.mybatisxml.pojo.WeiboIndexVO;
+import cn.tedu.mybatisxml.pojo.WeiboInfoVO;
 import cn.tedu.mybatisxml.pojo.WeiboVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -52,6 +54,16 @@ public interface WeiboMapper {
      * 查詢文章總數
      */
     Integer selectCount();
+
+    /**
+     * 文章列表頁面，展示用戶暱稱以及文章id及其內容
+     */
+    List<WeiboIndexVO> weiboIndex();
+
+    /**
+     * 展示文章詳情頁面
+     */
+    List<WeiboInfoVO> weiboInfo();
 
 
 
