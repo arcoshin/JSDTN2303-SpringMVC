@@ -14,4 +14,16 @@ public class OrderController {
         return "訂單查詢成功";
     }
 
+    @RequestMapping("/deleteOrder")
+    @ResponseBody
+    public String deleteOrder(){
+        return "訂單刪除成功";
+    }
+
+    @RequestMapping("/createOrder")
+    @ResponseBody
+    public String createOrder() {
+        return "訂單新增成功";
+    }
+
 }

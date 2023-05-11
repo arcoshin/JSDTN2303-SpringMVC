@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>工程首頁</h1>
+
+<!-- 絕對路徑中第一個 / 代表的是工程根路徑  和頁面所處位置無關
+ 1.當前位置：http://localhost:8080/index.html
+ 2.請求位置：http://localhost:8080/DeleteOrder
+-->
+<a href="/deleteOrder">刪除訂單</a>
+
+
+<h3>通過form表單發請求</h3>
+<form action="/createOrder">
+  <input type="text" name="orderId" placeholder="訂單編號">
+  <input type="text" name="orderAmount" placeholder="訂單金額">
+  <input type="submit" value="創建訂單">
+</form>
+
+</body>
+</html>
