@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="cn.tedu.mvccoolshark.mapper.ProductMapper">
+    <!--插入商品數據-->
+    <insert id="insert">/*需跟接口中聲明的方法名一致*/
+        INSERT INTO product
+        VALUES(NULL ,#{title},#{price},#{num})
+    </insert>
+
+    <!--展示商品列表-->
+    <select id="productList" resultType="cn.tedu.mvccoolshark.pojo.entity.Product">
+        SELECT * FROM product
+    </select>
+
+    <!--修改一個商品-->
+    <update id="updateProductById">
+        UPDATE product
+        <set>
+            <if test="title!=null">title=#{title},</if>
+            <if test="price!=null">price=#{price},</if>
+            <if test="num!=null">num=#{num}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+</mapper>
