@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 @RestController
@@ -25,12 +26,13 @@ public class UserController {
      */
     //@RequestBody企業常用註解，用以解析請求體類型
     @RequestMapping("reg")
-    public int reg(@RequestBody UserRegDTO userRegDTO){
+    public int reg(@RequestBody UserRegDTO userRegDTO) {
         //用戶端傳送進來的數據--->DTO類
         System.out.println("userRegDTO = " + userRegDTO);
         /**
          * 重複性驗證
          */
+
         //根據用戶名查詢用戶訊息:向服務端查詢數據--->VO類(來自服務器)
         UserVO userVO = userMapper.selectByUsername(userRegDTO.getUsername());
         if (userVO != null) {
@@ -40,10 +42,11 @@ public class UserController {
         /**
          * 存入user表:儲存完整數據--->entity類(實體類)
          */
+
         //建立傳遞參數的容器(完整訊息所以應該使用實體類)
         User user = new User();
         //將DTO類中(來自用戶)的參數傳遞給Entity類
-        BeanUtils.copyProperties(userRegDTO,user);
+        BeanUtils.copyProperties(userRegDTO, user);
         user.setCreated(new Date());
         //編寫SQL語句將用戶數據存入user表
         userMapper.insert(user);
@@ -54,13 +57,18 @@ public class UserController {
      * 登入
      */
     @RequestMapping("login")
-    public int login(@RequestBody UserLoginDTO userLoginDTO) {
+    public int login(@RequestBody UserLoginDTO userLoginDTO, HttpSession session) {//HttpSession登入狀態
         System.out.println("userLoginDTO = " + userLoginDTO);
         UserVO userVO = userMapper.selectByUsername(userLoginDTO.getUsername());
 
         if (userVO != null) {//用戶數據存在(非空)
             //判斷密碼
-            if (userVO.getPassword().equals(userLoginDTO.getPassword())){
+            if (userVO.getPassword().equals(userLoginDTO.getPassword())) {
+                /**
+                 * 將登入狀態保存起來
+                 * setAttribute(String s,Object o)
+                 */
+                session.setAttribute("user",userVO);
                 return 1;//登入成功
             }
             return 2;//密碼錯誤登入失敗
@@ -68,4 +76,21 @@ public class UserController {
         return 3;//用戶不存在
     }
 
+    /**
+     * 獲取當前登入狀態
+     */
+    @RequestMapping("currentUser")
+    public UserVO currentUser(HttpSession session) {
+        UserVO userVO = (UserVO) session.getAttribute("user");
+        //如果登錄過則返回userVO對象，否則null
+        return userVO;
+    }
+
+    /**
+     * 退出登入
+     */
+    @RequestMapping("logout")
+    public void logout(HttpSession session){
+        session.removeAttribute("user");
+    }
 }
