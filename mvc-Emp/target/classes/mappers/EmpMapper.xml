@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="cn.tedu.mvcemp.mapper.EmpMapper">
+
+    <!--增-->
+    <insert id="insert">
+        INSERT INTO emp
+        VALUES (NULL,#{title},#{salary},#{job})
+    </insert>
+
+    <!--查-->
+    <select id="select" resultType="cn.tedu.mvcemp.pojo.entity.Emp">
+        SELECT * FROM emp
+    </select>
+
+    <!--改-->
+    <update id="update">
+        UPDATE emp
+        <set>
+            <if test="title!=null">title=#{title},</if>
+            <if test="salary!=null">salary=#{salary},</if>
+            <if test="job!=null">job=#{job}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+</mapper>

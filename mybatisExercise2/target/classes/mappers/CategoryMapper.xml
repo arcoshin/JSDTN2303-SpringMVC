@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="com.tedu.mybatisexercise2.mapper.CategoryMapper">
+
+    <!--創建一個分類-->
+    <insert id="createCategory" parameterType="com.tedu.mybatisexercise2.pojo.dto.CategoryDTO">
+        INSERT INTO t_category (id ,name ,intro ,created)
+        VALUES (NULL, #{name}, #{intro}, #{created})
+    </insert>
+
+    <!--查詢所有分類-->
+    <select id="selectAllCategory" resultType="com.tedu.mybatisexercise2.pojo.vo.CategoryVO_Time">
+        SELECT name,intro,created FROM t_category
+    </select>
+
+    <!--透過id查詢分類-->
+    <select id="selectById" resultType="com.tedu.mybatisexercise2.pojo.vo.CategoryVO_Time">
+        SELECT name,intro,created FROM t_category WHERE id=#{id}
+    </select>
+
+    <!--透過id修改描述-->
+    <update id="updateIntroById">
+        UPDATE t_category SET intro=#{intro} WHERE id=#{id}
+    </update>
+
+    <!--統計分類總數-->
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM t_category
+    </select>
+
+    <!--查詢所有分類的名稱與描述-->
+    <select id="selectAllNameAndIntro" resultType="com.tedu.mybatisexercise2.pojo.vo.CategoryVO">
+        SELECT name,intro FROM t_category
+    </select>
+
+    <!--泛化重複的SQL語句-->
+    <sql id="deleteById">
+        DELETE FROM t_category WHERE id IN
+    </sql>
+
+    <!--透過id批量數組刪除分類-->
+    <delete id="deleteByIdArray" >
+        <include refid="deleteById"></include> (
+        <foreach collection="array" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--透過id批量集合刪除分類-->
+    <delete id="deleteByIdList" >
+        <include refid="deleteById"></include> (
+        <foreach collection="list" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--透過可變參數刪除分類-->
+    <delete id="deleteByIds" >
+        <include refid="deleteById"></include> (
+        <foreach collection="array" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--根據id動態修改數據-->
+    <update id="dynamicUpdateCategoryById">
+        UPDATE t_category
+        <set>
+            <if test="name!=null">name=#{name},</if>
+            <if test="intro!=null">intro=#{intro},</if>
+            <if test="created!=null">created=#{created}</if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+
+</mapper>

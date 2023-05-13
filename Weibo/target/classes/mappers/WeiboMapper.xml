@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="cn.tedu.weibo.mapper.WeiboMapper">
+    <!--新增一條文章-->
+    <insert id="insert">
+        INSERT INTO weibo
+        VALUES (NULL ,#{content},#{created},#{uid})
+    </insert>
+    <!--文章列表-->
+    <select id="selectIndex" resultType="cn.tedu.weibo.pojo.vo.WeiboIndexVO">
+        SELECT w.id,w.content,u.nickname FROM weibo w
+        JOIN user u ON u.id = w.user_id
+    </select>
+    <!--文章詳情-->
+    <select id="selectById" resultType="cn.tedu.weibo.pojo.vo.WeiboDetailVO">
+        SELECT w.id,w.content,w.created,u.nickname FROM weibo w
+        JOIN user u ON w.user_id = u.id
+        WHERE w.id=#{id}
+    </select>
+</mapper>

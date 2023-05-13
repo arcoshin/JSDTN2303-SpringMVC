@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="cn.tedu.weibo.mapper.UserMapper">
+    <!--根據用戶名查詢用戶訊息-->
+    <select id="selectByUsername" resultType="cn.tedu.weibo.pojo.vo.UserVO">
+        SELECT id,password,nickname
+        FROM user
+        WHERE username=#{username}
+    </select>
+
+    <!--新增一條用戶數據-->
+    <insert id="insert">
+        INSERT INTO user
+        VALUES (NULL ,#{username},#{password},#{nickname},#{created})
+    </insert>
+</mapper>

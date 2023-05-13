@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="cn.tedu.weibo.mapper.CommentMapper">
+    <!--新增一條評論數據-->
+    <insert id="insert">
+        INSERT INTO comment
+        VALUES (NULL ,#{content},#{created},#{uid},#{wid})
+    </insert>
+    <!--文章詳情中顯示評論詳情-->
+    <select id="selectByWeiboId" resultType="cn.tedu.weibo.pojo.vo.CommentVO">
+        SELECT c.id,c.content,c.created,u.nickname FROM comment c
+        JOIN user u ON c.user_id = u.id
+        WHERE c.weibo_id = #{id}
+    </select>
+</mapper>

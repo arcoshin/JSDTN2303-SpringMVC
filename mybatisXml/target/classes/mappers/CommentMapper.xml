@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--所有配置內容寫在這個標籤內-->
+<mapper namespace="cn.tedu.mybatisxml.mapper.CommentMapper">
+    <insert id="insert">
+        INSERT INTO comment (content,user_id,weibo_id)
+        VALUES(#{content},#{uid},#{wid})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM comment WHERE id=#{id}
+    </delete>
+
+    <update id="updateById">
+        UPDATE comment SET content=#{content} WHERE id=#{id}
+    </update>
+
+    <!--泛化重複的sql語句-->
+    <sql id="deleteSql">
+        DELETE FROM comment WHERE id IN
+    </sql>
+
+    <delete id="deleteByIdArray">
+        <include refid="deleteSql"></include>
+        (
+        /**
+        collection : 遍歷的參數存放類型(array、list......只能小寫!!!)
+        item : 將數組中的每個對象遍歷為id
+        separator : 每個元素之間的分隔器
+        */
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteByIdList">
+        <include refid="deleteSql"></include>
+        (
+        /**
+        collection : 遍歷的參數存放類型(array、list......只能小寫!!!)
+        item : 將數組中的每個對象遍歷為id
+        separator : 每個元素之間的分隔器
+        */
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="deleteByIds">
+        <include refid="deleteSql"></include>
+        (
+        /**
+        collection : 遍歷的參數存放類型(array、list......只能小寫!!!)
+        item : 將數組中的每個對象遍歷為id
+        separator : 每個元素之間的分隔器
+        */
+        <foreach collection="array" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+    <!--根據id動態修改數據-->
+    <update id="dynamicUpdateById">
+        UPDATE comment
+        <set>
+            <if test="content!=null">content=#{content},</if>
+            <if test="created!=null">created=#{created},</if>
+            <if test="uid!=null">user_id=#{uid},</if>
+            <if test="wid!=null">weibo_id=#{wid}</if>
+        </set>
+        WHERE id=#{id}
+
+    </update>
+    <!--另一種寫法-->
+    <!--    <update id="dynamicUpdate">-->
+    <!--        UPDATE comment SET-->
+    <!--            <if test="content!=null">content=#{content},</if>-->
+    <!--            <if test="created!=null">created=#{created},</if>-->
+    <!--            <if test="uid!=null">user_id=#{uid},</if>-->
+    <!--            <if test="wid!=null">weibo_id=#{wid}</if>-->
+    <!--        WHERE id=#{id}-->
+    <!--    </update>-->
+
+    <!--展示評論-->
+    <select id="commentInfo" resultType="cn.tedu.mybatisxml.pojo.CommentInfoVO">
+        SELECT c.content,c.created,u.nickname,w.id FROM comment c
+        JOIN user u ON c.user_id=u.id
+        JOIN weibo w ON c.weibo_id=w.id
+    </select>
+</mapper>
