@@ -4,6 +4,8 @@ import cn.tedu.weibo.mapper.WeiboMapper;
 import cn.tedu.weibo.pojo.dto.WeiboDTO;
 import cn.tedu.weibo.pojo.entity.Weibo;
 import cn.tedu.weibo.pojo.vo.UserVO;
+import cn.tedu.weibo.pojo.vo.WeiboDetailVO;
+import cn.tedu.weibo.pojo.vo.WeiboIndexVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/weibo/")
@@ -35,4 +38,23 @@ public class WeiboController {
         weiboMapper.insert(weibo);
         return 1;
     }
+
+    /**
+     * 首頁呈現文章列表
+     */
+    @RequestMapping("selectIndex")
+    public List<WeiboIndexVO> selectIndex() {
+        return weiboMapper.selectIndex();
+    }
+
+    /**
+     * 文章詳情
+     */
+    @RequestMapping("selectById")
+    public WeiboDetailVO selectById(int id) {
+        WeiboDetailVO weiboDetailVO = weiboMapper.selectById(id);
+        return weiboDetailVO;
+    }
+
+
 }
